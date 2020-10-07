@@ -711,6 +711,20 @@ public class CPUFragment extends RecyclerViewFragment {
             cpuInputBoostCard.addItem(dms);
         }
 
+        if (mCPUBoost.hasCpuBoostFreqLp() && mCPUFreq.getFreqs(mCPUFreq.getLITTLECpu()) != null) {
+            SelectView littlelp = new SelectView();
+            littlelp.setTitle("Boost Freq LITTLE Cluster");
+            // littlelp.setSummary(getString(R.string.iib_freq_lp));
+            littlelp.setItems(mCPUFreq.getAdjustedFreq(mCPUFreq.getLITTLECpu(),getActivity()));
+            littlelp.setItem((mCPUBoost.getCpuBoostFreqLp() / 1000)
+                    + getString(R.string.mhz));
+            littlelp.setOnItemSelected((selectView, position, item)
+                    -> mCPUBoost.setCpuBoostFreqLp(
+                    mCPUFreq.getFreqs(mCPUFreq.getLITTLECpu()).get(position), getActivity()));
+
+            cpuInputBoostCard.addItem(littlelp);
+        }
+
 		if (mCPUBoost.hasCpuBoostFreqHp() && mCPUFreq.getFreqs() != null) {
             SelectView bighp = new SelectView();
             bighp.setTitle("Boost Freq BIG Cluster");
@@ -723,20 +737,6 @@ public class CPUFragment extends RecyclerViewFragment {
                     mCPUFreq.getFreqs().get(position), getActivity()));
 
             cpuInputBoostCard.addItem(bighp);
-        }
-
-		if (mCPUBoost.hasCpuBoostFreqLp() && mCPUFreq.getFreqs(mCPUFreq.getLITTLECpu()) != null) {
-            SelectView littlelp = new SelectView();
-            littlelp.setTitle("Boost Freq LITTLE Cluster");
-            // littlelp.setSummary(getString(R.string.iib_freq_lp));
-            littlelp.setItems(mCPUFreq.getAdjustedFreq(mCPUFreq.getLITTLECpu(),getActivity()));
-            littlelp.setItem((mCPUBoost.getCpuBoostFreqLp() / 1000)
-                    + getString(R.string.mhz));
-            littlelp.setOnItemSelected((selectView, position, item)
-                    -> mCPUBoost.setCpuBoostFreqLp(
-                    mCPUFreq.getFreqs(mCPUFreq.getLITTLECpu()).get(position), getActivity()));
-
-            cpuInputBoostCard.addItem(littlelp);
         }
 
 		if (mCPUBoost.hasCpuBoostMaxLp() && mCPUFreq.getFreqs(mCPUFreq.getLITTLECpu()) != null) {
@@ -762,6 +762,34 @@ public class CPUFragment extends RecyclerViewFragment {
                     + getString(R.string.mhz));
             bigmp.setOnItemSelected((selectView, position, item)
                     -> mCPUBoost.setCpuBoostMaxPerf(
+                    mCPUFreq.getFreqs().get(position), getActivity()));
+
+            cpuInputBoostCard.addItem(bigmp);
+        }
+
+        if (mCPUBoost.hasCpuBoostScreenOnMinLp() && mCPUFreq.getFreqs(mCPUFreq.getLITTLECpu()) != null) {
+            SelectView littleml = new SelectView();
+            // littleml.setTitle("Min Freq. LITTLE Cluster While Screen On");
+            littleml.setSummary(getString(R.string.iib_screen_freq_ml));
+            littleml.setItems(mCPUFreq.getAdjustedFreq(mCPUFreq.getLITTLECpu(),getActivity()));
+            littleml.setItem((mCPUBoost.getCpuBoostScreenOnMinLp() / 1000)
+                    + getString(R.string.mhz));
+            littleml.setOnItemSelected((selectView, position, item)
+                    -> mCPUBoost.setCpuBoostScreenOnMinLp(
+                    mCPUFreq.getFreqs(mCPUFreq.getLITTLECpu()).get(position), getActivity()));
+
+            cpuInputBoostCard.addItem(littleml);
+        }
+
+        if (mCPUBoost.hasCpuBoostScreenOnMinPerf() && mCPUFreq.getFreqs() != null) {
+            SelectView bigmp = new SelectView();
+            // bigmp.setTitle("Min Freq. BIG Cluster While Screen On");
+            bigmp.setSummary(getString(R.string.iib_screen_freq_mp));
+            bigmp.setItems(mCPUFreq.getAdjustedFreq(getActivity()));
+            bigmp.setItem((mCPUBoost.getCpuBoostScreenOnMinPerf() / 1000)
+                    + getString(R.string.mhz));
+            bigmp.setOnItemSelected((selectView, position, item)
+                    -> mCPUBoost.setCpuBoostScreenOnMinPerf(
                     mCPUFreq.getFreqs().get(position), getActivity()));
 
             cpuInputBoostCard.addItem(bigmp);
@@ -805,12 +833,9 @@ public class CPUFragment extends RecyclerViewFragment {
             dffq.setValue(Misc.getDevFreqBoostFreq() + " Hz");
             dffq.setValueRaw(dffq.getValue().replace(" Hz", ""));
             dffq.setInputType(InputType.TYPE_CLASS_NUMBER);
-            dffq.setOnGenericValueListener(new GenericSelectView2.OnGenericValueListener() {
-                @Override
-                public void onGenericValueSelected(GenericSelectView2 genericSelectView, String value) {
-                    Misc.setDevFreqBoostFreq(Utils.strToInt(value), getActivity());
-                    genericSelectView.setValue(value + " Hz");
-                }
+            dffq.setOnGenericValueListener((genericSelectView, value) -> {
+                Misc.setDevFreqBoostFreq(Utils.strToInt(value), getActivity());
+                genericSelectView.setValue(value + " Hz");
             });
 
             cpuDevFreqBoostCard.addItem(dffq);

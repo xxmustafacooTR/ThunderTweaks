@@ -30,7 +30,7 @@ public class MoroSound {
     private static final String EQ_5_GAIN = MORO_SOUND + "eq_b5_gain";
     private static final String EQ_GAINS = MORO_SOUND + "eq_gains";
 
-    //private static final String HEADPHONE_LIMITS = MORO_SOUND + "headphone_limits";
+    private static final String HEADPHONE_LIMITS = MORO_SOUND + "headphone_limits";
 
 
 
@@ -47,6 +47,7 @@ public class MoroSound {
         sEqGains.add(EQ_5_GAIN);
 
         sEqProfiles.put("Flat", "0,0,0,0,0");
+        sEqProfiles.put("Normal", "1,0,0,0,1");
         sEqProfiles.put("Extreme Bass", "12,8,3,-1,1");
         sEqProfiles.put("Bass-Treble Balance", "10,7,0,2,5");
         sEqProfiles.put("Treble Gain", "-5,1,0,4,3");
@@ -84,11 +85,11 @@ public class MoroSound {
     public static void setHeadPhoneValues(String value_left, String value_right, Context context){
         run(Control.write(value_left + " " + value_right, HEADPHONE_GAIN), HEADPHONE_GAIN, context);
     }
-/*
+
     public static String getHeadphoneLimits(){
         return Utils.readFile(HEADPHONE_LIMITS);
     }
-*/
+
     public static String getHeadphoneL(){
         String[] value = Utils.readFile(HEADPHONE_GAIN).split(" ");
         return value[0];

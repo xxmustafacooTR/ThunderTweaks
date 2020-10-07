@@ -172,35 +172,31 @@ public class GrxVolumeManager extends RecyclerViewItem {
             mEarPieceRefVal = mEarPieceController.getReferenceValue();
             mEarPieceStep = mEarPieceController.getStepValue();
             mEarPieceRefPosition = mEarPieceController.getRefValPosition();
-            mEarPieceMin = mEarPieceRefVal - (mEarPieceRefPosition*mEarPieceStep);
+            mEarPieceMin = -3;
 
 
             /* set up wheel and db text */
 
             String kernelspeakervalue = MoroSound.getEarpiece();
             int kernelvalue;
-            if(kernelspeakervalue == null || kernelspeakervalue.isEmpty()) kernelvalue=20; // default value
-            else kernelvalue = Integer.valueOf(kernelspeakervalue);
+            if(kernelspeakervalue == null || kernelspeakervalue.isEmpty()) kernelvalue=12; // default value
+            else kernelvalue = Integer.parseInt(kernelspeakervalue);
 
             int wheelprogress = (kernelvalue - mEarPieceMin) / mEarPieceStep;
 
             mEarPieceController.getVolumeControlView().setProgress( wheelprogress);
-            int reg_val = mEarPieceController.getValue(wheelprogress);
-            mEarPieceController.setText(getHeadPhoneDbs(reg_val) + " dB");
+            mEarPieceController.setText(kernelspeakervalue + " dB");
 
             mEarPieceController.setListener((progress, refval, refvalposition, step, dif) -> {
                 int dbs = mEarPieceMin + progress*mEarPieceStep;
                 MoroSound.setEarpiece(String.valueOf(dbs),mContext);
-                int reg_val1 = mEarPieceController.getValue(progress);
-                mEarPieceController.setText(getHeadPhoneDbs(reg_val1) + " dB");
+                mEarPieceController.setText(String.valueOf(dbs) + " dB");
             });
 
             mEarPieceController.getVolumeControlView().setOnChangingProgressListener((progress, dif) -> {
                 int dbs = mEarPieceMin + progress*mEarPieceStep;
                 MoroSound.setEarpiece(String.valueOf(dbs),mContext);
-
-                int reg_val12 = mEarPieceController.getValue(progress);
-                mEarPieceController.setText(getHeadPhoneDbs(reg_val12) + " dB");
+                mEarPieceController.setText(String.valueOf(dbs) + " dB");
             });
         }
 
@@ -212,17 +208,19 @@ public class GrxVolumeManager extends RecyclerViewItem {
             mSpeakerRefVal = mSpeakerController.getReferenceValue();
             mSpeakerStep = mSpeakerController.getStepValue();
             mSpeakerRefPosition = mSpeakerController.getRefValPosition();
-            mSpeakerMin = mSpeakerRefVal - (mSpeakerRefPosition*mSpeakerStep);
+            mSpeakerMin = -3;
 
 
             /* set up wheel and db text */
 
             String kernelspeakervalue = MoroSound.getSpeaker();
             int kernelvalue;
-            if(kernelspeakervalue == null || kernelspeakervalue.isEmpty()) kernelvalue=20; // default value
-            else kernelvalue = Integer.valueOf(kernelspeakervalue);
+            if(kernelspeakervalue == null || kernelspeakervalue.isEmpty()) kernelvalue=12; // default value
+            else kernelvalue = Integer.parseInt(kernelspeakervalue);
 
-            mSpeakerController.getVolumeControlView().setProgress( (kernelvalue - mSpeakerMin) / mSpeakerStep );
+            int wheelspkprogress =  (kernelvalue - mSpeakerMin) / mSpeakerStep;
+
+            mSpeakerController.getVolumeControlView().setProgress(wheelspkprogress);
             mSpeakerController.setText(kernelspeakervalue + " dB");
 
             mSpeakerController.setListener((progress, refval, refvalposition, step, dif) -> {

@@ -66,7 +66,7 @@ public class Sound {
     private static final String SPEAKER_FLAR = "/sys/kernel/sound_control/speaker_gain";
 
     private static final String HEADPHONE_MORO = "/sys/kernel/moro_sound_control/headphone_gain";
-    //private static final String MICROPHONE_MORO = "/sys/kernel/moro_sound_control/mic_gain";
+    private static final String MICROPHONE_MORO = "/sys/kernel/moro_sound_control/mic_gain";
     private static final String EARPIECE_MORO = "/sys/kernel/moro_sound_control/earpiece_gain";
     private static final String SPEAKER_MORO = "/sys/kernel/moro_sound_control/speaker_gain";
 
@@ -106,7 +106,7 @@ public class Sound {
         for (int i = 512; i < 701; i++) {
             mMoroHPLimits.add(String.valueOf(i));
         }
-        for (int i = 0; i < 32; i++) {
+        for (int i = 0; i < 7; i++) {
             mMoroSPKLimits.add(String.valueOf(i));
         }
     }

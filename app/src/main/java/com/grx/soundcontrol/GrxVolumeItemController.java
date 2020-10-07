@@ -24,6 +24,7 @@
  */
 package com.grx.soundcontrol;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -70,7 +71,7 @@ public class GrxVolumeItemController extends LinearLayout implements GrxVolumeCo
 
         if (attrs != null) {
 
-            TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.VolumeItemController, defStyleAttr, 0);
+            @SuppressLint("CustomViewStyleable") TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.VolumeItemController, defStyleAttr, 0);
 
             String label  = a.getString(R.styleable.VolumeItemController_label);
             if(label!=null) mLabel = label;

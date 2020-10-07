@@ -1,5 +1,5 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
-    <string name="app_name">ThunderTweaks</string>
+    <string name="app_name">ThunderTweaks 9810</string>
 
     <string name="checking_info">Checking info…</string>
     <string name="checking_root">Checking root access</string>
@@ -242,6 +242,8 @@
     <string name="iib_freq_lp">Boost Freq. LITTLE Cluster</string>
     <string name="iib_freq_ml">Boost Max Freq. LITTLE Cluster</string>
     <string name="iib_freq_mp">Boost Max Freq. big Cluster</string>
+    <string name="iib_screen_freq_ml">Min Freq. LITTLE Cluster While Screen On</string>
+    <string name="iib_screen_freq_mp">Min Freq. big Cluster While Screen On</string>
     <string name="iid_enabled">Dev Freq Boost</string>
     <string name="iid_duration_ms">Dev Freq Boost Duration ms</string>
     <string name="iid_duration_ms_summary">Duration Boost of Devfreq in ms.</string>
@@ -417,10 +419,21 @@
 	<string name="rq_4_0"> The time reserved for each process in the queue for scale down.</string>	
     <string name="samsungPlug">SamsungPlug</string>
     <string name="samsungPlug_summary">An in-kernel Samsung Stock Hotplugging</string>
+    <string name="samsungPlug_user_mode">Big CPU Active Cores (Default 0)</string>
+    <string name="samsungPlug_enable_ldsum">Ldsum Enable or Disable</string>
+    <string name="samsungPlug_enable_skiplit">Skiplit Enable or Disable</string>
     <string name="samsungPlug_max_cpu">Maximum turned On cores</string>
 	<string name="samsungPlug_min_cpu">Minimum turned On cores</string>
-	<string name="samsungPlug_DualChangeMs">Dual Change in Ms</string>
+    <string name="samsungPlug_Single_Freq">Max Big Cpu Hotplug Freq</string>
+	<string name="samsungPlug_SingleChangeMs">Single Change in Ms</string>
+    <string name="samsungPlug_DualChangeMs">Dual Change in Ms</string>
+    <string name="samsungPlug_Dual_Freq">Max Dual Hotplug Freq</string>
+    <string name="samsungPlug_TripleChangeMs">Triple Change in Ms</string>
+    <string name="samsungPlug_Triple_Freq">Max Triple Hotplug Freq</string>
+    <string name="samsungPlug_QuadChangeMs">Quad Change in Ms</string>
+    <string name="samsungPlug_Quad_Freq">Max Quad Hotplug Freq</string>
 	<string name="samsungPlug_LitMultRatio">Lit Multi Ratio</string>
+    <string name="samsungPlug_Cl_Busy_Ratio">Cl Busy Ratio</string>
 	<string name="samsungPlug_ToDualRatio">To Dual Ratio</string>
 	<string name="samsungPlug_ToQuadRatio">To Quad Ratio</string>
 	<string name="samsungPlug_BigModeDual">Big Mode DUAL - CPU works in DUAL big cluster mode. Values 6 to 7.</string>
@@ -1402,4 +1415,6 @@
     <string name="appupdater_download_filed">Download FAILED!</string>
     <string name="appupdater_downloading_file">Downloading</string>
     <string name="appupdater_json">https://raw.githubusercontent.com/corsicanu/thunderTweaks/master/app/update.json</string>
+    <string name="mdnie">Disable Color Control</string>
+    <string name="expert">Advanced Settings (Not Stable)</string>
 </resources>

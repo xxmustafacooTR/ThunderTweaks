@@ -3,7 +3,9 @@
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.apps.dashclock/dashclock-api/2.0.0/fe40ba5457e17502d11114f39b45e9dfe3f51c6d/dashclock-api-2.0.0.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.apps.dashclock/dashclock-api/2.0.0/147dc2d1c6ab540fecf3867616d6119c06075fc1/dashclock-api-2.0.0-javadoc.jar!/" />
+    </JAVADOC>
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.android.apps.dashclock/dashclock-api/2.0.0/ce76fed095cf56f18146bf2d598264518e05746/dashclock-api-2.0.0-sources.jar!/" />
     </SOURCES>

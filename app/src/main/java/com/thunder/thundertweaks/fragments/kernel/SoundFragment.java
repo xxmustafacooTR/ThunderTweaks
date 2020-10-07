@@ -195,8 +195,17 @@ public class SoundFragment extends RecyclerViewFragment {
     private void speakerGainInit(List<RecyclerViewItem> items) {
         SeekBarView speakerGain = new SeekBarView();
         speakerGain.setTitle(getString(R.string.speaker_gain));
-        speakerGain.setItems(mSound.getSpeakerGainLimits());
-        speakerGain.setProgress(mSound.getSpeakerGainLimits().indexOf(mSound.getSpeakerGain()));
+        ArrayList<String> spkcocokernel = new ArrayList<String>();
+        spkcocokernel.add("0");
+        spkcocokernel.add("1");
+        spkcocokernel.add("2");
+        spkcocokernel.add("3");
+        spkcocokernel.add("4");
+        spkcocokernel.add("5");
+        spkcocokernel.add("6");
+        spkcocokernel.add("7");
+        speakerGain.setItems(spkcocokernel);
+        speakerGain.setProgress(spkcocokernel.indexOf(mSound.getSpeakerGain()));
         speakerGain.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
             @Override
             public void onStop(SeekBarView seekBarView, int position, String value) {
@@ -403,9 +412,18 @@ public class SoundFragment extends RecyclerViewFragment {
         if (mSound.hasMoroSpeakerGain()) {
             SeekBarView speakerMoro = new SeekBarView();
             speakerMoro.setTitle(getString(R.string.speaker_gain));
-            speakerMoro.setSummary(getString(R.string.def) + ": 20");
-            speakerMoro.setItems(mSound.getSpeakerGainLimits());
-            speakerMoro.setProgress(mSound.getSpeakerGainLimits().indexOf(mSound.getSpeakerGain()));
+            speakerMoro.setSummary(getString(R.string.def) + ": 5");
+            ArrayList<String> spkcocokernel = new ArrayList<String>();
+            spkcocokernel.add("0");
+            spkcocokernel.add("1");
+            spkcocokernel.add("2");
+            spkcocokernel.add("3");
+            spkcocokernel.add("4");
+            spkcocokernel.add("5");
+            spkcocokernel.add("6");
+            spkcocokernel.add("7");
+            speakerMoro.setItems(spkcocokernel);
+            speakerMoro.setProgress(spkcocokernel.indexOf(mSound.getSpeakerGain()));
             speakerMoro.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
                 @Override
                 public void onStop(SeekBarView seekBarView, int position, String value) {
@@ -686,7 +704,8 @@ public class SoundFragment extends RecyclerViewFragment {
 
         CardView volumecard = new CardView(getActivity());
         volumecard.setTitle("Volume Control"); //bbbb - to do : add string
-        volumecard.addItem(volumeManager);items.add(volumecard);
+        volumecard.addItem(volumeManager);
+        items.add(volumecard);
 
 
         if(MoroSound.hasEqSw()) {

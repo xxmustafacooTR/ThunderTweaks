@@ -44,7 +44,7 @@ public class CPUBoost {
 
     private static final String CPU_BOOST = "/sys/module/cpu_boost/parameters";
     private static final String CPU_BOOST_EXYNOS = "/sys/kernel/cpu_input_boost";
-	private static final String CPU_BOOST_EXYNOS8890 = "/sys/module/cpu_input_boost_8890/parameters";
+	private static final String CPU_BOOST_EXYNOS8890 = "/sys/module/cpu_input_boost/parameters";
 
     private static final List<String> sEnable = new ArrayList<>();
 
@@ -69,8 +69,10 @@ public class CPUBoost {
     private static final String CPU_BOOST_EXYNOS8890_DURATION = CPU_BOOST_EXYNOS8890 + "/input_boost_duration";
     private static final String CPU_BOOST_EXYNOS8890_FREQ_HP = CPU_BOOST_EXYNOS8890 + "/input_boost_freq_hp";
     private static final String CPU_BOOST_EXYNOS8890_FREQ_LP = CPU_BOOST_EXYNOS8890 + "/input_boost_freq_lp";
-    private static final String CPU_BOOST_EXYNOS8890_FREQ_PERF = CPU_BOOST_EXYNOS8890 + "/input_boost_freq_perf";
-	private static final String CPU_BOOST_EXYNOS8890_MAX_LP = CPU_BOOST_EXYNOS8890 + "/input_boost_max_lp";
+	private static final String CPU_BOOST_EXYNOS8890_MAX_LP = CPU_BOOST_EXYNOS8890 + "/max_boost_freq_lp";
+    private static final String CPU_BOOST_EXYNOS8890_MAX_HP = CPU_BOOST_EXYNOS8890 + "/max_boost_freq_hp";
+    private static final String CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_LP = CPU_BOOST_EXYNOS8890 + "/remove_input_boost_freq_lp";
+    private static final String CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_HP = CPU_BOOST_EXYNOS8890 + "/remove_input_boost_freq_perf";
 
     private String ENABLE;
 
@@ -247,16 +249,42 @@ public class CPUBoost {
     }
 
 	public void setCpuBoostMaxPerf(int value, Context context) {
-        run(Control.write(String.valueOf(value), CPU_BOOST_EXYNOS8890_FREQ_PERF),
-                CPU_BOOST_EXYNOS8890_FREQ_PERF, context);
+        run(Control.write(String.valueOf(value), CPU_BOOST_EXYNOS8890_MAX_HP),
+                CPU_BOOST_EXYNOS8890_MAX_HP, context);
     }
 
     public static int getCpuBoostMaxPerf() {
-        return Utils.strToInt(Utils.readFile(CPU_BOOST_EXYNOS8890_FREQ_PERF));
+        return Utils.strToInt(Utils.readFile(CPU_BOOST_EXYNOS8890_MAX_HP));
     }
 
     public static boolean hasCpuBoostMaxPerf() {
-        return Utils.existFile(CPU_BOOST_EXYNOS8890_FREQ_PERF);
+        return Utils.existFile(CPU_BOOST_EXYNOS8890_MAX_HP);
+    }
+
+    public void setCpuBoostScreenOnMinPerf(int value, Context context) {
+        run(Control.write(String.valueOf(value), CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_HP),
+                CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_HP, context);
+    }
+
+    public static int getCpuBoostScreenOnMinPerf() {
+        return Utils.strToInt(Utils.readFile(CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_HP));
+    }
+
+    public static boolean hasCpuBoostScreenOnMinPerf() {
+        return Utils.existFile(CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_HP);
+    }
+
+    public void setCpuBoostScreenOnMinLp(int value, Context context) {
+        run(Control.write(String.valueOf(value), CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_LP),
+                CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_LP, context);
+    }
+
+    public static int getCpuBoostScreenOnMinLp() {
+        return Utils.strToInt(Utils.readFile(CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_LP));
+    }
+
+    public static boolean hasCpuBoostScreenOnMinLp() {
+        return Utils.existFile(CPU_BOOST_EXYNOS8890_SCREEN_ON_MIN_LP);
     }
 
     public void setCpuBoostSyncThreshold(int value, Context context) {

@@ -56,6 +56,7 @@ public class Misc {
     private final List<String> mLoggers = new ArrayList<>();
     private final List<String> mCrcs = new ArrayList<>();
     private final List<String> mFsyncs = new ArrayList<>();
+    private final List<String> mMdnies = new ArrayList<>();
 
     {
         mLoggers.add("/sys/kernel/logger_mode/logger_mode");
@@ -67,6 +68,10 @@ public class Misc {
 
         mFsyncs.add("/sys/devices/virtual/misc/fsynccontrol/fsync_enabled");
         mFsyncs.add("/sys/module/sync/parameters/fsync_enabled");
+
+        mMdnies.add("/sys/class/blacklight/panel/device/lcd/panel/mdnie/bypass");
+        mMdnies.add("/sys/class/mdnie/mdnie/bypass");
+        mMdnies.add("/sys/class/mdnie/bypass");
     }
 
     private String LOGGER_FILE;
@@ -74,6 +79,8 @@ public class Misc {
     private Boolean CRC_USE_INTEGER;
     private String FSYNC_FILE;
     private Boolean FSYNC_USE_INTEGER;
+    private String MDNIE_FILE;
+    private Boolean MDNIE_USE_INTEGER;
 
     private Misc() {
         for (String file : mLoggers) {
@@ -95,6 +102,14 @@ public class Misc {
             if (Utils.existFile(file)) {
                 FSYNC_FILE = file;
                 FSYNC_USE_INTEGER = Character.isDigit(Utils.readFile(FSYNC_FILE).toCharArray()[0]);
+                break;
+            }
+        }
+
+        for (String file : mMdnies) {
+            if (Utils.existFile(file)) {
+                MDNIE_FILE = file;
+                MDNIE_USE_INTEGER = Character.isDigit(Utils.readFile(MDNIE_FILE).toCharArray()[0]);
                 break;
             }
         }
@@ -208,6 +223,19 @@ public class Misc {
 
     public boolean hasLoggerEnable() {
         return LOGGER_FILE != null;
+    }
+
+    public void enableMdnie(boolean enable, Context context) {
+        run(Control.write(MDNIE_USE_INTEGER ? enable ? "1" : "0" : enable ? "Y" : "N", MDNIE_FILE),
+                MDNIE_FILE, context);
+    }
+
+    public boolean hasMdnie() {
+        return MDNIE_FILE != null;
+    }
+
+    public boolean isMdnieEnabled() {
+        return Utils.readFile(MDNIE_FILE).equals(MDNIE_USE_INTEGER ? "1" : "Y");
     }
 
     private void run(String command, String id, Context context) {

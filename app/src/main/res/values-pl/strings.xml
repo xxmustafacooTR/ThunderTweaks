@@ -183,7 +183,7 @@
   <string name="fingerprint_boost">Boost podczas dotyku przycisku do odczytu lini papilarnych</string>
   <string name="fingerprint_boost_summary">Ta opcja zwiększy minimalne taktowanie CPU jeżeli naciśniesz przycisk skanowania lini papilarnych (HOME).</string>
   <string name="iid_duration_ms">Dev Freq Boost czas trwania wzmocnienia ms</string>
-  <string name="iid_duration_ms_sumamry">Czas trwania wzmocnienia dla Devfreq w ms</string>
+  <string name="iid_duration_ms_summary">Czas trwania wzmocnienia dla Devfreq w ms</string>
   <!-- CPU Voltage -->
   <string name="global_offset">Zmiany Globalne</string>
   <string name="override_vmin">Nadpisz minimalne napięcie</string>

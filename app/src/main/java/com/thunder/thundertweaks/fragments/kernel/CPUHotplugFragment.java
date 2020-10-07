@@ -51,6 +51,10 @@ import com.thunder.thundertweaks.utils.Utils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
+
+import static com.thunder.thundertweaks.utils.kernel.cpuhotplug.SamsungPlug.hasCpuSingle;
+import static com.thunder.thundertweaks.utils.kernel.cpuhotplug.SamsungPlug.hasTripleChangeMs;
 
 /**
  * Created by willi on 07.05.16.
@@ -157,7 +161,7 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
 
         samsungPlug.addItem(enable);
         mEnableViews.add(enable);
-/* older */
+/* older
 
 		SeekBarView max = new SeekBarView();
         max.setTitle(getString(R.string.samsungPlug_max_cpu));
@@ -194,17 +198,35 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
         });
 
         samsungPlug.addItem(min);
-/* older */
+    older */
+
+        SeekBarView SingleChangeMs = new SeekBarView();
+        SingleChangeMs.setTitle(getString(R.string.samsungPlug_SingleChangeMs));
+        SingleChangeMs.setMax(500);
+        SingleChangeMs.setMin(0);
+        SingleChangeMs.setProgress(Utils.strToInt(SamsungPlug.getSingleChangeMs()));
+        SingleChangeMs.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+            @Override
+            public void onStop(SeekBarView seekBarView, int position, String value) {
+                SamsungPlug.setSingleChangeMs((position), getActivity());
+            }
+
+            @Override
+            public void onMove(SeekBarView seekBarView, int position, String value) {
+            }
+        });
+
+        samsungPlug.addItem(SingleChangeMs);
 
         SeekBarView DualChangeMs = new SeekBarView();
         DualChangeMs.setTitle(getString(R.string.samsungPlug_DualChangeMs));
         DualChangeMs.setMax(500);
-        DualChangeMs.setMin(1);
-        DualChangeMs.setProgress(Utils.strToInt(SamsungPlug.getDualChangeMs()) - 1);
+        DualChangeMs.setMin(0);
+        DualChangeMs.setProgress(Utils.strToInt(SamsungPlug.getDualChangeMs()));
         DualChangeMs.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
             @Override
             public void onStop(SeekBarView seekBarView, int position, String value) {
-                SamsungPlug.setDualChangeMs((position + 1), getActivity());
+                SamsungPlug.setDualChangeMs((position), getActivity());
             }
 
             @Override
@@ -214,7 +236,111 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
 
         samsungPlug.addItem(DualChangeMs);
 
-        SeekBarView LitMultRatio = new SeekBarView();
+        if(hasTripleChangeMs()) {
+            SeekBarView TripleChangeMs = new SeekBarView();
+            TripleChangeMs.setTitle(getString(R.string.samsungPlug_TripleChangeMs));
+            TripleChangeMs.setMax(500);
+            TripleChangeMs.setMin(0);
+            TripleChangeMs.setProgress(Utils.strToInt(SamsungPlug.getTripleChangeMs()));
+            TripleChangeMs.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+                @Override
+                public void onStop(SeekBarView seekBarView, int position, String value) {
+                    SamsungPlug.setTripleChangeMs((position), getActivity());
+                }
+
+                @Override
+                public void onMove(SeekBarView seekBarView, int position, String value) {
+                }
+            });
+
+            samsungPlug.addItem(TripleChangeMs);
+
+        }
+
+        SeekBarView QuadChangeMs = new SeekBarView();
+        QuadChangeMs.setTitle(getString(R.string.samsungPlug_QuadChangeMs));
+        QuadChangeMs.setMax(500);
+        QuadChangeMs.setMin(0);
+        QuadChangeMs.setProgress(Utils.strToInt(SamsungPlug.getQuadChangeMs()));
+        QuadChangeMs.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+            @Override
+            public void onStop(SeekBarView seekBarView, int position, String value) {
+                SamsungPlug.setQuadChangeMs((position), getActivity());
+            }
+
+            @Override
+            public void onMove(SeekBarView seekBarView, int position, String value) {
+            }
+        });
+
+        samsungPlug.addItem(QuadChangeMs);
+
+        SeekBarView ClBusyRatio = new SeekBarView();
+        ClBusyRatio.setTitle(getString(R.string.samsungPlug_Cl_Busy_Ratio));
+        ClBusyRatio.setMax(100);
+        ClBusyRatio.setMin(0);
+        ClBusyRatio.setProgress(Utils.strToInt(SamsungPlug.getClBusyRatio()));
+        ClBusyRatio.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+            @Override
+            public void onStop(SeekBarView seekBarView, int position, String value) {
+                SamsungPlug.setClBusyRatio((position), getActivity());
+            }
+
+            @Override
+            public void onMove(SeekBarView seekBarView, int position, String value) {
+            }
+        });
+
+        samsungPlug.addItem(ClBusyRatio);
+
+        if (hasCpuSingle()) {
+            SelectView single_freq = new SelectView();
+            single_freq.setSummary(getString(R.string.samsungPlug_Single_Freq));
+            single_freq.setItems(mCPUFreq.getAdjustedFreq(mCPUFreq.getBigCpu(), getActivity()));
+            single_freq.setItem((SamsungPlug.getCpuSingle() / 1000)
+                    + getString(R.string.mhz));
+            single_freq.setOnItemSelected((selectView, position, item)
+                    -> SamsungPlug.setCpuSingle(
+                    mCPUFreq.getFreqs(mCPUFreq.getBigCpu()).get(position), getActivity()));
+
+            samsungPlug.addItem(single_freq);
+
+        }
+
+        SelectView dual_freq = new SelectView();
+        dual_freq.setSummary(getString(R.string.samsungPlug_Dual_Freq));
+        dual_freq.setItems(mCPUFreq.getAdjustedFreq(mCPUFreq.getBigCpu(),getActivity()));
+        dual_freq.setItem((SamsungPlug.getCpuDual() / 1000)
+                + getString(R.string.mhz));
+        dual_freq.setOnItemSelected((selectView, position, item)
+                -> SamsungPlug.setCpuDual(
+                mCPUFreq.getFreqs(mCPUFreq.getBigCpu()).get(position), getActivity()));
+
+        samsungPlug.addItem(dual_freq);
+
+        SelectView triple_freq = new SelectView();
+        triple_freq.setSummary(getString(R.string.samsungPlug_Triple_Freq));
+        triple_freq.setItems(mCPUFreq.getAdjustedFreq(mCPUFreq.getBigCpu(),getActivity()));
+        triple_freq.setItem((SamsungPlug.getCpuTriple() / 1000)
+                + getString(R.string.mhz));
+        triple_freq.setOnItemSelected((selectView, position, item)
+                -> SamsungPlug.setCpuTriple(
+                mCPUFreq.getFreqs(mCPUFreq.getBigCpu()).get(position), getActivity()));
+
+        samsungPlug.addItem(triple_freq);
+
+        SelectView quad_freq = new SelectView();
+        quad_freq.setSummary(getString(R.string.samsungPlug_Quad_Freq));
+        quad_freq.setItems(mCPUFreq.getAdjustedFreq(mCPUFreq.getBigCpu(),getActivity()));
+        quad_freq.setItem((SamsungPlug.getCpuQuad() / 1000)
+                + getString(R.string.mhz));
+        quad_freq.setOnItemSelected((selectView, position, item)
+                -> SamsungPlug.setCpuQuad(
+                mCPUFreq.getFreqs(mCPUFreq.getBigCpu()).get(position), getActivity()));
+
+        samsungPlug.addItem(quad_freq);
+
+        /* SeekBarView LitMultRatio = new SeekBarView();
         LitMultRatio.setTitle(getString(R.string.samsungPlug_LitMultRatio));
         LitMultRatio.setMax(200);
         LitMultRatio.setMin(1);
@@ -303,9 +429,55 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
         });
 
         samsungPlug.addItem(BigModeNormal);
+
+         */
 		
         if (samsungPlug.size() > 0) {
             items.add(samsungPlug);
+        }
+
+        CardView expert = new CardView(getActivity());
+        expert.setTitle(getString(R.string.expert));
+        expert.setFullSpan(false);
+
+        SwitchView ldsum_enable = new SwitchView();
+        ldsum_enable.setTitle(getString(R.string.samsungPlug_enable_ldsum));
+        ldsum_enable.setChecked(SamsungPlug.isLdsumEnabled());
+        ldsum_enable.addOnSwitchListener((switchView, isChecked)
+                -> SamsungPlug.enableLdsum(isChecked, getActivity()));
+
+        expert.addItem(ldsum_enable);
+        mEnableViews.add(ldsum_enable);
+
+        SwitchView skiplit_enable = new SwitchView();
+        skiplit_enable.setTitle(getString(R.string.samsungPlug_enable_skiplit));
+        skiplit_enable.setChecked(SamsungPlug.isSkiplitEnabled());
+        skiplit_enable.addOnSwitchListener((switchView, isChecked)
+                -> SamsungPlug.enableSkiplit(isChecked, getActivity()));
+
+        expert.addItem(skiplit_enable);
+        mEnableViews.add(skiplit_enable);
+
+        SeekBarView UserMode = new SeekBarView();
+        UserMode.setTitle(getString(R.string.samsungPlug_user_mode));
+        UserMode.setMax(4);
+        UserMode.setMin(0);
+        UserMode.setProgress(Utils.strToInt(SamsungPlug.getUserMode()));
+        UserMode.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
+            @Override
+            public void onStop(SeekBarView seekBarView, int position, String value) {
+                SamsungPlug.setUserMode((position), getActivity());
+            }
+
+            @Override
+            public void onMove(SeekBarView seekBarView, int position, String value) {
+            }
+        });
+
+        expert.addItem(UserMode);
+
+        if (expert.size() > 0) {
+            items.add(expert);
         }
 
     }
@@ -668,7 +840,7 @@ public class CPUHotplugFragment extends RecyclerViewFragment {
             SelectView profile = new SelectView();
             profile.setTitle(getString(R.string.profile));
             profile.setSummary(getString(R.string.cpu_hotplug_profile_summary));
-            profile.setItems(LazyPlug.getProfileMenu(getActivity()));
+            profile.setItems(LazyPlug.getProfileMenu(Objects.requireNonNull(getActivity())));
             profile.setItem(LazyPlug.getProfile());
             profile.setOnItemSelected((selectView, position, item)
                     -> LazyPlug.setProfile(position, getActivity()));

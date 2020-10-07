@@ -668,17 +668,17 @@ public class CPUFreq {
 
     public int getLITTLECpu() {
         isBigLITTLE();
-        return mLITTLECpu < 0 ? 0 : mLITTLECpu;
+        return Math.max(mLITTLECpu, 0);
     }
 
     public int getMidCpu() {
         isBigLITTLE();
-        return mMidCpu < 0 ? 0 : mMidCpu;
+        return Math.max(mMidCpu, 0);
     }
 
     public int getBigCpu() {
         isBigLITTLE();
-        return mBigCpu < 0 ? 0 : mBigCpu;
+        return Math.max(mBigCpu, 0);
     }
 
     public boolean hasMidCpu() {
@@ -713,6 +713,9 @@ public class CPUFreq {
                 mBigCpu = 6;
                 mMidCpu = 4;
                 mLITTLECpu = 0;
+            } else if (is9810()) {
+                mBigCpu = 4;
+                mLITTLECpu = 0;
             } else if (is855()){
                 mBigCpu = 7;
                 mMidCpu = 4;
@@ -733,11 +736,6 @@ public class CPUFreq {
                     }
                 }
             }
-
-            if (mBigCpu == -1 || mLITTLECpu == -1) {
-                mBigCpu = -2;
-                mLITTLECpu = -2;
-            }
         }
 
         return mBigCpu >= 0 && mLITTLECpu >= 0;
@@ -753,12 +751,24 @@ public class CPUFreq {
         return board.equalsIgnoreCase("universal7885") || board.equalsIgnoreCase("universal7884");
     }
 
+    private boolean is9810() {
+        String board = Device.getBoard();
+        return board.equalsIgnoreCase("exynos9810")
+                || board.equalsIgnoreCase("universal9810")
+                || board.equalsIgnoreCase("exynos9815")
+                || board.equalsIgnoreCase("universal9815")
+                || board.equalsIgnoreCase("exynos980")
+                || board.equalsIgnoreCase("exynos985");
+    }
+
     private boolean is9820() {
         String board = Device.getBoard();
         return board.equalsIgnoreCase("exynos9820")
                 || board.equalsIgnoreCase("universal9820")
                 || board.equalsIgnoreCase("exynos9825")
                 || board.equalsIgnoreCase("universal9825")
+                || board.equalsIgnoreCase("exynos9830")
+                || board.equalsIgnoreCase("universal9830")
                 || board.equalsIgnoreCase("exynos990")
                 || board.equalsIgnoreCase("exynos995");
     }

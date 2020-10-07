@@ -7,8 +7,8 @@ android {
         applicationId 'com.thunder.thundertweaks'
         minSdkVersion 23
         targetSdkVersion 30
-        versionCode 1071
-        versionName "1.0.7.1"
+        versionCode 1073
+        versionName "1.0.7.3"
         vectorDrawables.useSupportLibrary = true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -46,13 +46,13 @@ dependencies {
     implementation('com.github.ozodrukh:CircularReveal:1.3.1@aar') {
         transitive = true
     }
-    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.android.material:material:1.2.1'
     implementation 'androidx.legacy:legacy-preference-v14:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.google.android.apps.dashclock:dashclock-api:2.0.0'
-    implementation 'com.mattprecious.swirl:swirl:1.2.0'
+    implementation 'com.mattprecious.swirl:swirl:1.3.0'
     implementation 'com.mikhaellopez:circularimageview:3.0.2'
     implementation 'org.adw.library:discrete-seekbar:1.0.1'
     implementation 'org.cyanogenmod:platform.sdk:6.0'
