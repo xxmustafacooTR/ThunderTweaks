@@ -1,4 +1,4 @@
-# ThunderTweaks
+# ThunderTweaks 9810
 
 It is a fork of Real ThunderTweaks [ThunderTweaks](https://github.com/ThunderStorms21th/ThunderTweaks/) , hKTweaks [hKTweaks](https://github.com/corsicanu/hKtweaks) and MoroGoku's [MTweaks](https://github.com/morogoku/MTweaks-KernelAdiutorMOD), properly adaptated to exynos9810 device (maybe even more).
 Original hKTweaks and MTweaks app is a Mod of Grarak's [KernelAdiutor](https://github.com/Grarak/KernelAdiutor) for compatibilize to Samsung Exynos.
