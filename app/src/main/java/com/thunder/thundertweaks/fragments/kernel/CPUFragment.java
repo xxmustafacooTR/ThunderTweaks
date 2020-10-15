@@ -814,7 +814,7 @@ public class CPUFragment extends RecyclerViewFragment {
             enableidle.setTitle("CPU Idle Settings");
             enableidle.setSummaryOn(getString(R.string.cpu_boost_summary_on));
             enableidle.setSummaryOff(getString(R.string.cpu_boost_summary_off));
-            enableidle.setChecked(mCPUBoost.isEnabled());
+            enableidle.setChecked(mCPUBoost.isCpuIdleEnabled());
             enableidle.addOnSwitchListener((switchView, isChecked)
                     -> mCPUBoost.enableCpuIdle(isChecked, getActivity()));
 
