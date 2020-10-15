@@ -25,6 +25,7 @@ import android.content.Context;
 import com.thunder.thundertweaks.fragments.ApplyOnBootFragment;
 import com.thunder.thundertweaks.utils.Utils;
 import com.thunder.thundertweaks.utils.root.Control;
+import com.thunder.thundertweaks.utils.root.RootUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +81,7 @@ public class CPUBoost {
     private static final String CPU_IDLE_EXYNOS_SCREEN_OFF_MIN_HP = CPU_IDLE_EXYNOS + "/cpu4_suspend_min_freq";
     private static final String CPU_IDLE_EXYNOS_SCREEN_OFF_MAX_LP = CPU_IDLE_EXYNOS + "/cpu0_suspend_max_freq";
     private static final String CPU_IDLE_EXYNOS_SCREEN_OFF_MAX_HP = CPU_IDLE_EXYNOS + "/cpu4_suspend_max_freq";
+    private static final String CPU_THROTTLE = "/sys/power/throttle_limit";
 
     private String ENABLE;
 
@@ -356,6 +358,18 @@ public class CPUBoost {
 
     public boolean hasCpuIdle() {
         return Utils.existFile(CPU_IDLE_EXYNOS_ENABLE);
+    }
+
+    public void setThrottle(String value, Context context) {
+        run(Control.write(String.valueOf(value), CPU_THROTTLE), CPU_THROTTLE, context);
+    }
+
+    public String getThrottle() {
+        return Utils.readFile(CPU_THROTTLE);
+    }
+
+    public boolean hasThrottle() {
+        return Utils.existFile(CPU_THROTTLE);
     }
 
     public void setCpuBoostSyncThreshold(int value, Context context) {
