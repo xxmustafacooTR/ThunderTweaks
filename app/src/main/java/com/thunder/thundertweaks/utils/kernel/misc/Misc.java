@@ -52,6 +52,7 @@ public class Misc {
     private static final String WIREGUARD = "/sys/module/wireguard/version";
     private static final String MAGISK_BIN = "/sbin/magisk";
     private static final String RESETPROP = MAGISK_BIN + " resetprop -v -n ";
+    private static final String BATTERY_SAVER = "/sys/kernel/battery_saver/parameters/enabled";
 
     private final List<String> mLoggers = new ArrayList<>();
     private final List<String> mCrcs = new ArrayList<>();
@@ -81,6 +82,7 @@ public class Misc {
     private Boolean FSYNC_USE_INTEGER;
     private String MDNIE_FILE;
     private Boolean MDNIE_USE_INTEGER;
+    private Boolean BATTERY_SAVER_INTEGER;
 
     private Misc() {
         for (String file : mLoggers) {
@@ -185,6 +187,19 @@ public class Misc {
 
     public boolean hasDynamicFsync() {
         return Utils.existFile(DYNAMIC_FSYNC);
+    }
+
+    public void enableBatterySaver(boolean enable, Context context) {
+        run(Control.write(BATTERY_SAVER_INTEGER ? enable ? "1" : "0" : enable ? "Y" : "N", BATTERY_SAVER),
+                BATTERY_SAVER, context);
+    }
+
+    public boolean isBatterySaverEnabled() {
+        return Utils.readFile(BATTERY_SAVER).equals(BATTERY_SAVER_INTEGER ? "1" : "Y");
+    }
+
+    public boolean hasBatterySaver() {
+        return Utils.existFile(BATTERY_SAVER);
     }
 
     public void enableFsync(boolean enable, Context context) {

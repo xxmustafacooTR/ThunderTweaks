@@ -1417,4 +1417,6 @@
     <string name="appupdater_json">https://raw.githubusercontent.com/corsicanu/thunderTweaks/master/app/update.json</string>
     <string name="mdnie">Disable Color Control</string>
     <string name="expert">Advanced Settings (Not Stable)</string>
+    <string name="battery_saver">Kernel Side Battery Saver</string>
+    <string name="battery_saver_summary">This disables all soc boosts and chooses low cpu freqs</string>
 </resources>
