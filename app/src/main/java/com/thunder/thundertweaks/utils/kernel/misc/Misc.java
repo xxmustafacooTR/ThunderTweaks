@@ -52,12 +52,12 @@ public class Misc {
     private static final String WIREGUARD = "/sys/module/wireguard/version";
     private static final String MAGISK_BIN = "/sbin/magisk";
     private static final String RESETPROP = MAGISK_BIN + " resetprop -v -n ";
-    private static final String BATTERY_SAVER = "/sys/kernel/battery_saver/parameters/enabled";
 
     private final List<String> mLoggers = new ArrayList<>();
     private final List<String> mCrcs = new ArrayList<>();
     private final List<String> mFsyncs = new ArrayList<>();
     private final List<String> mMdnies = new ArrayList<>();
+    private final List<String> mBatterySavers = new ArrayList<>();
 
     {
         mLoggers.add("/sys/kernel/logger_mode/logger_mode");
@@ -73,6 +73,11 @@ public class Misc {
         mMdnies.add("/sys/class/blacklight/panel/device/lcd/panel/mdnie/bypass");
         mMdnies.add("/sys/class/mdnie/mdnie/bypass");
         mMdnies.add("/sys/class/mdnie/bypass");
+
+        mBatterySavers.add("/sys/kernel/battery_saver/parameters/enabled");
+        mBatterySavers.add("/sys/kernel/battery/parameters/battery_saver");
+        mBatterySavers.add("/sys/module/battery_saver/parameters/enabled");
+        mBatterySavers.add("/sys/module/battery/parameters/battery_saver");
     }
 
     private String LOGGER_FILE;
@@ -82,6 +87,7 @@ public class Misc {
     private Boolean FSYNC_USE_INTEGER;
     private String MDNIE_FILE;
     private Boolean MDNIE_USE_INTEGER;
+    private String BATTERY_SAVER;
     private Boolean BATTERY_SAVER_INTEGER;
 
     private Misc() {
@@ -112,6 +118,14 @@ public class Misc {
             if (Utils.existFile(file)) {
                 MDNIE_FILE = file;
                 MDNIE_USE_INTEGER = Character.isDigit(Utils.readFile(MDNIE_FILE).toCharArray()[0]);
+                break;
+            }
+        }
+
+        for (String file : mBatterySavers) {
+            if (Utils.existFile(file)) {
+                BATTERY_SAVER = file;
+                BATTERY_SAVER_INTEGER = Character.isDigit(Utils.readFile(BATTERY_SAVER).toCharArray()[0]);
                 break;
             }
         }
