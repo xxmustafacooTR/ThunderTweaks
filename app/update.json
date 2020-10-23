@@ -5,5 +5,6 @@
   "releaseNotes": [
     "Changelog:",
     "+ Added Cpu DVFS Disabler Option",
+	"+ Added Cpu Affinity Settings"
   ]
 }
