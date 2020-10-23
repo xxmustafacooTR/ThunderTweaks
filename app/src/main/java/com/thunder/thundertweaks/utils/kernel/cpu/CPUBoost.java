@@ -56,7 +56,7 @@ public class CPUBoost {
         sEnable.add(CPU_BOOST + "/cpuboost_enable");
         sEnable.add(CPU_BOOST + "/input_boost_enabled");
         sEnable.add(CPU_BOOST_EXYNOS + "/enabled");
-    //    sEnable.add(CPU_BOOST_EXYNOS8890 + "/input_boost_enabled");
+        sEnable.add(CPU_BOOST_EXYNOS8890 + "/input_boost_enabled");
     }
 
     private static final String CPU_BOOST_DEBUG_MASK = CPU_BOOST + "/debug_mask";
@@ -81,6 +81,8 @@ public class CPUBoost {
     private static final String CPU_IDLE_EXYNOS_SCREEN_OFF_MIN_HP = CPU_IDLE_EXYNOS + "/cpu4_suspend_min_freq";
     private static final String CPU_IDLE_EXYNOS_SCREEN_OFF_MAX_LP = CPU_IDLE_EXYNOS + "/cpu0_suspend_max_freq";
     private static final String CPU_IDLE_EXYNOS_SCREEN_OFF_MAX_HP = CPU_IDLE_EXYNOS + "/cpu4_suspend_max_freq";
+    private static final String CPU_WQ_AFFINITY = "/sys/bus/workqueue/devices/writeback/cpumask";
+    private static final String CPU_IRQ_AFFINITY = "/proc/irq/default_smp_affinity";
     private static final String CPU_THROTTLE = "/sys/power/throttle_limit";
 
     private String ENABLE;
@@ -412,6 +414,30 @@ public class CPUBoost {
         run(Control.write(
                 ENABLE.endsWith("cpuboost_enable") ? (enable ? "Y" : "N") : (enable ? "1" : "0"), ENABLE),
                 ENABLE, context);
+    }
+
+    public void setwqAffinity(String value, Context context) {
+        run(Control.write(String.valueOf(value), CPU_WQ_AFFINITY), CPU_WQ_AFFINITY, context);
+    }
+
+    public String getwqAffinity() {
+        return Utils.readFile(CPU_WQ_AFFINITY);
+    }
+
+    public boolean haswqAffinity() {
+        return Utils.existFile(CPU_WQ_AFFINITY);
+    }
+
+    public void setirqAffinity(String value, Context context) {
+        run(Control.write(String.valueOf(value), CPU_IRQ_AFFINITY), CPU_IRQ_AFFINITY, context);
+    }
+
+    public String getirqAffinity() {
+        return Utils.readFile(CPU_IRQ_AFFINITY);
+    }
+
+    public boolean hasirqAffinity() {
+        return Utils.existFile(CPU_IRQ_AFFINITY);
     }
 
     public boolean isEnabled() {

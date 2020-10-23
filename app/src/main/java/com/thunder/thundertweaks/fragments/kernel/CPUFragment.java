@@ -147,6 +147,12 @@ public class CPUFragment extends RecyclerViewFragment {
         if (Misc.hasCpuDvfsDisabler()) {
             disableDvfsInit(items);
         }
+        if (mCPUBoost.haswqAffinity()) {
+            wqAffinityInit(items);
+        }
+        if (mCPUBoost.hasirqAffinity()) {
+            irqAffinityInit(items);
+        }
         if (mCPUBoost.hasThrottle()) {
             throttleInit(items);
         }
@@ -995,6 +1001,36 @@ public class CPUFragment extends RecyclerViewFragment {
 
         disableDvfsCard.addItem(disableDvfs);
         items.add(disableDvfsCard);
+    }
+
+    private void wqAffinityInit(List<RecyclerViewItem> items) {
+        CardView wqAffinityCard = new CardView(getActivity());
+        wqAffinityCard.setTitle("CPU affinity for write-back flush");
+
+        GenericSelectView wqAffinity = new GenericSelectView();
+        wqAffinity.setSummary("CPU Affinity (Default ff)");
+        wqAffinity.setValue(mCPUBoost.getwqAffinity());
+        wqAffinity.setValueRaw(wqAffinity.getValue());
+        wqAffinity.setOnGenericValueListener((genericSelectView, value)
+                -> mCPUBoost.setwqAffinity(value, getActivity()));
+
+        wqAffinityCard.addItem(wqAffinity);
+        items.add(wqAffinityCard);
+    }
+
+    private void irqAffinityInit(List<RecyclerViewItem> items) {
+        CardView irqAffinityCard = new CardView(getActivity());
+        irqAffinityCard.setTitle("CPU affinity for irq");
+
+        GenericSelectView irqAffinity = new GenericSelectView();
+        irqAffinity.setSummary("CPU Affinity (Default ff)");
+        irqAffinity.setValue(mCPUBoost.getirqAffinity());
+        irqAffinity.setValueRaw(irqAffinity.getValue());
+        irqAffinity.setOnGenericValueListener((genericSelectView, value)
+                -> mCPUBoost.setirqAffinity(value, getActivity()));
+
+        irqAffinityCard.addItem(irqAffinity);
+        items.add(irqAffinityCard);
     }
 
     private void throttleInit(List<RecyclerViewItem> items) {
