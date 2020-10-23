@@ -1414,7 +1414,7 @@
     <string name="appupdater_btn_dismiss">Dismiss</string>
     <string name="appupdater_download_filed">Download FAILED!</string>
     <string name="appupdater_downloading_file">Downloading</string>
-    <string name="appupdater_json">https://raw.githubusercontent.com/corsicanu/thunderTweaks/master/app/update.json</string>
+    <string name="appupdater_json">https://raw.githubusercontent.com/xxmustafacooTR/ThunderTweaks/master/app/update.json</string>
     <string name="mdnie">Disable Color Control</string>
     <string name="expert">Advanced Settings (Not Stable)</string>
     <string name="battery_saver">Kernel Side Battery Saver</string>

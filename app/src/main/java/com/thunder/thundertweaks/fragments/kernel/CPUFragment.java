@@ -144,6 +144,9 @@ public class CPUFragment extends RecyclerViewFragment {
         if (Misc.hasPowerSavingWq()) {
             powerSavingWqInit(items);
         }
+        if (Misc.hasCpuDvfsDisabler()) {
+            disableDvfsInit(items);
+        }
         if (mCPUBoost.hasThrottle()) {
             throttleInit(items);
         }
@@ -979,9 +982,24 @@ public class CPUFragment extends RecyclerViewFragment {
         items.add(pwqCard);
     }
 
+    private void disableDvfsInit(List<RecyclerViewItem> items) {
+        CardView disableDvfsCard = new CardView(getActivity());
+        disableDvfsCard.setTitle("Cpu DVFS Disable");
+
+        SwitchView disableDvfs = new SwitchView();
+        disableDvfs.setSummaryOn(getString(R.string.enabled));
+        disableDvfs.setSummaryOff(getString(R.string.disabled));
+        disableDvfs.setChecked(Misc.isCpuDvfsDisablerEnabled());
+        disableDvfs.addOnSwitchListener((switchView, isChecked)
+                -> Misc.enableCpuDvfsDisabler(isChecked, getActivity()));
+
+        disableDvfsCard.addItem(disableDvfs);
+        items.add(disableDvfsCard);
+    }
+
     private void throttleInit(List<RecyclerViewItem> items) {
         CardView throttleCard = new CardView(getActivity());
-        throttleCard.setTitle("CPU Throttle Freqs");
+        throttleCard.setTitle("CPU Throttle Freqs (Not Stable)");
 
         GenericSelectView cpuThrottle = new GenericSelectView();
         cpuThrottle.setSummary("Throttle Freqs (big_freq:low_freq)");
