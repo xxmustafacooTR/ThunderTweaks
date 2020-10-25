@@ -98,11 +98,11 @@ public class IOFragment extends RecyclerViewFragment {
             readahead.setMax(8192);
             readahead.setMin(0);
             readahead.setOffset(16);
-            readahead.setProgress(mIO.getReadahead(storage) / 16 -1);
+            readahead.setProgress(mIO.getReadahead(storage) / 16);
             readahead.setOnSeekBarListener(new SeekBarView.OnSeekBarListener() {
                 @Override
                 public void onStop(SeekBarView seekBarView, int position, String value) {
-                    mIO.setReadahead(storage, (position + 1) * 16, getActivity());
+                    mIO.setReadahead(storage, (position) * 16, getActivity());
                 }
 
                 @Override
