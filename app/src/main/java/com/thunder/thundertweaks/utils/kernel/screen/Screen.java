@@ -26,7 +26,7 @@ public class Screen {
 
     public static boolean supported() {
         return Calibration.getInstance().supported() || Gamma.supported()
-                || Misc.getInstance().supported();
+                || Misc.getInstance().supported() || com.thunder.thundertweaks.utils.kernel.misc.Misc.getInstance().hasMdnie();
     }
 
 }

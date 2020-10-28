@@ -71,6 +71,7 @@ public class Misc {
         mFsyncs.add("/sys/module/sync/parameters/fsync_enabled");
 
         mMdnies.add("/sys/class/blacklight/panel/device/lcd/panel/mdnie/bypass");
+        mMdnies.add("/sys/devices/platform/panel_drv@001/blacklight/panel/device/lcd/panel/mdnie/bypass");
         mMdnies.add("/sys/class/mdnie/mdnie/bypass");
         mMdnies.add("/sys/class/mdnie/bypass");
 

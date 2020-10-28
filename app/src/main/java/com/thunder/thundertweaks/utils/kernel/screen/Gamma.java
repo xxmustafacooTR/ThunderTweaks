@@ -23,6 +23,7 @@ import android.content.Context;
 
 import com.thunder.thundertweaks.fragments.ApplyOnBootFragment;
 import com.thunder.thundertweaks.utils.Utils;
+import com.thunder.thundertweaks.utils.kernel.misc.Misc;
 import com.thunder.thundertweaks.utils.root.Control;
 
 import java.util.ArrayList;
@@ -33,6 +34,15 @@ import java.util.List;
  */
 public class Gamma {
 
+    private static Gamma sInstance;
+
+    public static Gamma getInstance() {
+        if (sInstance == null) {
+            sInstance = new Gamma();
+        }
+        return sInstance;
+    }
+
     private static final String K_GAMMA_R = "/sys/devices/platform/mipi_lgit.1537/kgamma_r";
     private static final String K_GAMMA_G = "/sys/devices/platform/mipi_lgit.1537/kgamma_g";
     private static final String K_GAMMA_B = "/sys/devices/platform/mipi_lgit.1537/kgamma_b";
@@ -41,22 +51,80 @@ public class Gamma {
     private static final String K_GAMMA_GREEN = "/sys/devices/platform/mipi_lgit.1537/kgamma_green";
     private static final String K_GAMMA_BLUE = "/sys/devices/platform/mipi_lgit.1537/kgamma_blue";
 
-    private static final String GAMMACONTROL = "/sys/class/misc/gammacontrol";
-    private static final String GAMMACONTROL_RED_GREYS = GAMMACONTROL + "/red_greys";
-    private static final String GAMMACONTROL_RED_MIDS = GAMMACONTROL + "/red_mids";
-    private static final String GAMMACONTROL_RED_BLACKS = GAMMACONTROL + "/red_blacks";
-    private static final String GAMMACONTROL_RED_WHITES = GAMMACONTROL + "/red_whites";
-    private static final String GAMMACONTROL_GREEN_GREYS = GAMMACONTROL + "/green_greys";
-    private static final String GAMMACONTROL_GREEN_MIDS = GAMMACONTROL + "/green_mids";
-    private static final String GAMMACONTROL_GREEN_BLACKS = GAMMACONTROL + "/green_blacks";
-    private static final String GAMMACONTROL_GREEN_WHITES = GAMMACONTROL + "/green_whites";
-    private static final String GAMMACONTROL_BLUE_GREYS = GAMMACONTROL + "/blue_greys";
-    private static final String GAMMACONTROL_BLUE_MIDS = GAMMACONTROL + "/blue_mids";
-    private static final String GAMMACONTROL_BLUE_BLACKS = GAMMACONTROL + "/blue_blacks";
-    private static final String GAMMACONTROL_BLUE_WHITES = GAMMACONTROL + "/blue_whites";
-    private static final String GAMMACONTROL_CONTRAST = GAMMACONTROL + "/contrast";
-    private static final String GAMMACONTROL_BRIGHTNESS = GAMMACONTROL + "/brightness";
-    private static final String GAMMACONTROL_SATURATION = GAMMACONTROL + "/saturation";
+    private final List<String> mMdnies = new ArrayList<>();
+    private final List<String> mGammas = new ArrayList<>();
+    private final List<String> mPanels = new ArrayList<>();
+    {
+        mMdnies.add("/sys/class/mdnie/mdnie");
+        mMdnies.add("/sys/class/mdnie");
+        mMdnies.add("/sys/devices/platform/panel_drv@001/blacklight/panel/device/lcd/panel/mdnie");
+        mMdnies.add("/sys/class/blacklight/panel/device/lcd/panel/mdnie");
+
+        mGammas.add("/sys/devices/platform/panel_drv@001/blacklight/panel");
+        mGammas.add("/sys/class/blacklight/panel");
+
+        mPanels.add("/sys/devices/platform/panel_drv@001/blacklight/panel/device/lcd/panel");
+        mPanels.add("/sys/class/lcd/panel");
+        mPanels.add("/sys/class/blacklight/panel/device/lcd/panel");
+    }
+    private String MDNIE;
+    private String GAMMACONTROL;
+    private String PANEL;
+
+    //private static final String MDNIE = "/sys/class/mdnie/mdnie";
+    private String GAMMACONTROL_RED_GREYS;
+    private String GAMMACONTROL_RED_MIDS;
+    private String GAMMACONTROL_RED_BLACKS;
+    private String GAMMACONTROL_RED_WHITES;
+    private String GAMMACONTROL_GREEN_GREYS;
+    private String GAMMACONTROL_GREEN_MIDS;
+    private String GAMMACONTROL_GREEN_BLACKS;
+    private String GAMMACONTROL_GREEN_WHITES;
+    private String GAMMACONTROL_BLUE_GREYS;
+    private String GAMMACONTROL_BLUE_MIDS;
+    private String GAMMACONTROL_BLUE_BLACKS;
+    private String GAMMACONTROL_BLUE_WHITES;
+    private String GAMMACONTROL_SATURATION;
+    private String GAMMACONTROL_BRIGHTNESS;
+    private String GAMMACONTROL_BRIGHTNESS_MAX;
+    private String GAMMACONTROL_CONTRAST;
+
+    private Gamma() {
+        for (String file : mMdnies) {
+            if (Utils.existFile(file)) {
+                MDNIE = file;
+                GAMMACONTROL_RED_GREYS = MDNIE + "/red_greys";
+                GAMMACONTROL_RED_MIDS = MDNIE + "/red_mids";
+                GAMMACONTROL_RED_BLACKS = MDNIE + "/red_blacks";
+                GAMMACONTROL_RED_WHITES = MDNIE + "/red_whites";
+                GAMMACONTROL_GREEN_GREYS = MDNIE + "/green_greys";
+                GAMMACONTROL_GREEN_MIDS = MDNIE + "/green_mids";
+                GAMMACONTROL_GREEN_BLACKS = MDNIE + "/green_blacks";
+                GAMMACONTROL_GREEN_WHITES = MDNIE + "/green_whites";
+                GAMMACONTROL_BLUE_GREYS = MDNIE + "/blue_greys";
+                GAMMACONTROL_BLUE_MIDS = MDNIE + "/blue_mids";
+                GAMMACONTROL_BLUE_BLACKS = MDNIE + "/blue_blacks";
+                GAMMACONTROL_BLUE_WHITES = MDNIE + "/blue_whites";
+                GAMMACONTROL_SATURATION = MDNIE + "/saturation";
+                break;
+            }
+        }
+        for (String file : mPanels) {
+            if (Utils.existFile(file)) {
+                PANEL = file;
+                GAMMACONTROL_CONTRAST = PANEL + "/contrast";
+                break;
+            }
+        }
+        for (String file : mGammas) {
+            if (Utils.existFile(file)) {
+                GAMMACONTROL = file;
+                GAMMACONTROL_BRIGHTNESS = GAMMACONTROL + "/brightness";
+                GAMMACONTROL_BRIGHTNESS_MAX = GAMMACONTROL + "/max_brightness";
+                break;
+            }
+        }
+    }
 
     private static final String DSI_PANEL_RP = "/sys/module/dsi_panel/kgamma_rp";
     private static final String DSI_PANEL_RN = "/sys/module/dsi_panel/kgamma_rn";
@@ -78,21 +146,17 @@ public class Gamma {
         sKGammaFiles.add(K_GAMMA_GREEN);
         sKGammaFiles.add(K_GAMMA_BLUE);
 
-        sGammaControlFiles.add(GAMMACONTROL_RED_GREYS);
-        sGammaControlFiles.add(GAMMACONTROL_RED_MIDS);
-        sGammaControlFiles.add(GAMMACONTROL_RED_BLACKS);
-        sGammaControlFiles.add(GAMMACONTROL_RED_WHITES);
-        sGammaControlFiles.add(GAMMACONTROL_GREEN_GREYS);
-        sGammaControlFiles.add(GAMMACONTROL_GREEN_MIDS);
-        sGammaControlFiles.add(GAMMACONTROL_GREEN_BLACKS);
-        sGammaControlFiles.add(GAMMACONTROL_GREEN_WHITES);
-        sGammaControlFiles.add(GAMMACONTROL_BLUE_GREYS);
-        sGammaControlFiles.add(GAMMACONTROL_BLUE_MIDS);
-        sGammaControlFiles.add(GAMMACONTROL_BLUE_BLACKS);
-        sGammaControlFiles.add(GAMMACONTROL_BLUE_WHITES);
-        sGammaControlFiles.add(GAMMACONTROL_CONTRAST);
-        sGammaControlFiles.add(GAMMACONTROL_BRIGHTNESS);
-        sGammaControlFiles.add(GAMMACONTROL_SATURATION);
+        sGammaControlFiles.add("/sys/class/blacklight/panel/device/lcd/panel/mdnie/saturation");
+        sGammaControlFiles.add("/sys/devices/platform/panel_drv@001/blacklight/panel/device/lcd/panel/mdnie/saturation");
+        sGammaControlFiles.add("/sys/class/mdnie/mdnie/saturation");
+        sGammaControlFiles.add("/sys/class/mdnie/saturation");
+        sGammaControlFiles.add("/sys/class/blacklight/panel/brightness");
+        sGammaControlFiles.add("/sys/devices/platform/panel_drv@001/blacklight/panel/brightness");
+        sGammaControlFiles.add("/sys/class/blacklight/panel/max_brightness");
+        sGammaControlFiles.add("/sys/devices/platform/panel_drv@001/blacklight/panel/max_brightness");
+        sGammaControlFiles.add("/sys/class/blacklight/panel/device/lcd/panel/contrast");
+        sGammaControlFiles.add("/sys/devices/platform/panel_drv@001/blacklight/panel/device/lcd/panel/contrast");
+        sGammaControlFiles.add("/sys/class/lcd/panel/contrast");
 
         sDsiPanelFiles.add(DSI_PANEL_RP);
         sDsiPanelFiles.add(DSI_PANEL_RN);
@@ -188,7 +252,7 @@ public class Gamma {
         return false;
     }
 
-    public static void setGammaControlProfile(int profile, GammaProfiles.GammaControlProfiles gammaControlProfiles,
+    /* public static void setGammaControlProfile(int profile, GammaProfiles.GammaControlProfiles gammaControlProfiles,
                                               Context context) {
         if (Calibration.getInstance().hasColors()) {
             Calibration.getInstance().setColors(gammaControlProfiles.getKCAL(profile), context);
@@ -209,64 +273,67 @@ public class Gamma {
         setGammaBrightness(gammaControlProfiles.getBrightness(profile), context);
         setGammaSaturation(gammaControlProfiles.getSaturation(profile), context);
     }
+    public static void setRgb(String value, Context context) {
+        run(Control.write(value, GAMMACONTROL_RGB), GAMMACONTROL_RGB, context);
+    } */
 
-    public static void setGammaSaturation(String value, Context context) {
+    public void setGammaSaturation(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_SATURATION), GAMMACONTROL_SATURATION, context);
     }
 
-    public static void setGammaBrightness(String value, Context context) {
+    public void setGammaBrightness(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_BRIGHTNESS), GAMMACONTROL_BRIGHTNESS, context);
     }
 
-    public static void setGammaContrast(String value, Context context) {
+    public void setGammaContrast(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_CONTRAST), GAMMACONTROL_CONTRAST, context);
     }
 
-    public static void setBlueWhites(String value, Context context) {
+    public void setBlueWhites(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_BLUE_WHITES), GAMMACONTROL_BLUE_WHITES, context);
     }
 
-    public static void setBlueBlacks(String value, Context context) {
+    public void setBlueBlacks(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_BLUE_BLACKS), GAMMACONTROL_BLUE_BLACKS, context);
     }
 
-    public static void setBlueMids(String value, Context context) {
+    public void setBlueMids(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_BLUE_MIDS), GAMMACONTROL_BLUE_MIDS, context);
     }
 
-    public static void setBlueGreys(String value, Context context) {
+    public void setBlueGreys(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_BLUE_GREYS), GAMMACONTROL_BLUE_GREYS, context);
     }
 
-    public static void setGreenWhites(String value, Context context) {
+    public void setGreenWhites(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_GREEN_WHITES), GAMMACONTROL_GREEN_WHITES, context);
     }
 
-    public static void setGreenBlacks(String value, Context context) {
+    public void setGreenBlacks(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_GREEN_BLACKS), GAMMACONTROL_GREEN_BLACKS, context);
     }
 
-    public static void setGreenMids(String value, Context context) {
+    public void setGreenMids(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_GREEN_MIDS), GAMMACONTROL_GREEN_MIDS, context);
     }
 
-    public static void setGreenGreys(String value, Context context) {
+    public void setGreenGreys(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_GREEN_GREYS), GAMMACONTROL_GREEN_GREYS, context);
     }
 
-    public static void setRedWhites(String value, Context context) {
+    public void setRedWhites(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_RED_WHITES), GAMMACONTROL_RED_WHITES, context);
     }
 
-    public static void setRedBlacks(String value, Context context) {
+    public void setRedBlacks(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_RED_BLACKS), GAMMACONTROL_RED_BLACKS, context);
     }
 
-    public static void setRedMids(String value, Context context) {
+    public void setRedMids(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_RED_MIDS), GAMMACONTROL_RED_MIDS, context);
     }
 
-    public static void setRedGreys(String value, Context context) {
+    public void setRedGreys(String value, Context context) {
         run(Control.write(value, GAMMACONTROL_RED_GREYS), GAMMACONTROL_RED_GREYS, context);
     }
 
@@ -276,63 +343,71 @@ public class Gamma {
         return GAMMA_PROFILES.getGammaControl();
     }
 
-    public static String getGammaSaturation() {
+    /* public static String getRgb() {
+        return Utils.readFile(GAMMACONTROL_RGB);
+    } */
+
+    public String getGammaSaturation() {
         return Utils.readFile(GAMMACONTROL_SATURATION);
     }
 
-    public static String getGammaBrightness() {
+    public String getGammaBrightness() {
         return Utils.readFile(GAMMACONTROL_BRIGHTNESS);
     }
 
-    public static String getGammaContrast() {
+    public String getMaxGammaBrightness() {
+        return Utils.readFile(GAMMACONTROL_BRIGHTNESS_MAX);
+    }
+
+    public String getGammaContrast() {
         return Utils.readFile(GAMMACONTROL_CONTRAST);
     }
 
-    public static String getBlueWhites() {
+    public String getBlueWhites() {
         return Utils.readFile(GAMMACONTROL_BLUE_WHITES);
     }
 
-    public static String getBlueBlacks() {
+    public String getBlueBlacks() {
         return Utils.readFile(GAMMACONTROL_BLUE_BLACKS);
     }
 
-    public static String getBlueMids() {
+    public String getBlueMids() {
         return Utils.readFile(GAMMACONTROL_BLUE_MIDS);
     }
 
-    public static String getBlueGreys() {
+    public String getBlueGreys() {
         return Utils.readFile(GAMMACONTROL_BLUE_GREYS);
     }
 
-    public static String getGreenWhites() {
+    public String getGreenWhites() {
         return Utils.readFile(GAMMACONTROL_GREEN_WHITES);
     }
 
-    public static String getGreenBlacks() {
+    public String getGreenBlacks() {
         return Utils.readFile(GAMMACONTROL_GREEN_BLACKS);
     }
 
-    public static String getGreenMids() {
+    public String getGreenMids() {
         return Utils.readFile(GAMMACONTROL_GREEN_MIDS);
     }
 
-    public static String getGreenGreys() {
+    public String getGreenGreys() {
         return Utils.readFile(GAMMACONTROL_GREEN_GREYS);
     }
 
-    public static String getRedWhites() {
+    public String getRedWhites() {
         return Utils.readFile(GAMMACONTROL_RED_WHITES);
     }
 
-    public static String getRedBlacks() {
+    public String getRedBlacks() {
         return Utils.readFile(GAMMACONTROL_RED_BLACKS);
     }
 
-    public static String getRedMids() {
+    public String getRedMids() {
         return Utils.readFile(GAMMACONTROL_RED_MIDS);
     }
 
-    public static String getRedGreys() {
+    public String getRedGreys() {
         return Utils.readFile(GAMMACONTROL_RED_GREYS);
     }
 

@@ -79,9 +79,6 @@ public class MiscFragment extends RecyclerViewFragment {
             crcInit(items);
         }
         fsyncInit(items);
-        if (mMisc.hasMdnie()) {
-            mdnieInit(items);
-        }
         if (mMisc.hasGentleFairSleepers()) {
             gentlefairsleepersInit(items);
         }
@@ -261,17 +258,6 @@ public class MiscFragment extends RecyclerViewFragment {
 
             items.add(dynamicFsync);
         }
-    }
-
-    private void mdnieInit(List<RecyclerViewItem> items) {
-        SwitchView mdnie = new SwitchView();
-        mdnie.setTitle(getString(R.string.mdnie_global_controls));
-        mdnie.setSummary(getString(R.string.mdnie));
-        mdnie.setChecked(mMisc.isMdnieEnabled());
-        mdnie.addOnSwitchListener((switchView, isChecked)
-                -> mMisc.enableMdnie(isChecked, getActivity()));
-
-        items.add(mdnie);
     }
 
     private void gentlefairsleepersInit(List<RecyclerViewItem> items) {

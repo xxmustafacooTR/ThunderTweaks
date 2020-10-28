@@ -58,9 +58,13 @@ public class Calibration {
     private static final String DIAG0_POWER_CTRL = DIAG0 + "/power_rail_ctrl";
 
     private static final String COLOR_CONTROL = "/sys/class/misc/colorcontrol";
-    private static final String COLOR_CONTROL_MUILTIPLIER = COLOR_CONTROL + "/multiplier";
+    //private static final String COLOR_CONTROL_MUILTIPLIER = COLOR_CONTROL + "/multiplier";
     private static final String COLOR_CONTROL_CTRL = COLOR_CONTROL + "/safety_enabled";
 
+    private static final String COLOR_CONTROL_MUILTIPLIER = "/sys/class/blacklight/panel/device/lcd/panel/mdnie/rgb";
+    private static final String COLOR_CONTROL_MUILTIPLIER2 = "/sys/devices/platform/panel_drv@001/blacklight/panel/device/lcd/panel/mdnie/rgb";
+    private static final String COLOR_CONTROL_MUILTIPLIER3 = "/sys/class/mdnie/mdnie/rgb";
+    private static final String COLOR_CONTROL_MUILTIPLIER4 = "/sys/class/mdnie/rgb";
     private static final String SAMOLED_COLOR = "/sys/class/misc/samoled_color";
     private static final String SAMOLED_COLOR_RED = SAMOLED_COLOR + "/red_multiplier";
     private static final String SAMOLED_COLOR_GREEN = SAMOLED_COLOR + "/green_multiplier";
@@ -81,9 +85,13 @@ public class Calibration {
         mSRGB.add("/sys/class/graphics/fb0/SRGB");
         mSRGB.add("/sys/class/graphics/fb0/srgb");
 
+        mColors.add(COLOR_CONTROL_MUILTIPLIER);
+        mColors.add(COLOR_CONTROL_MUILTIPLIER2);
+        mColors.add(COLOR_CONTROL_MUILTIPLIER3);
+        mColors.add(COLOR_CONTROL_MUILTIPLIER4);
+
         mColors.add(KCAL_CTRL);
         mColors.add(DIAG0_POWER);
-        mColors.add(COLOR_CONTROL_MUILTIPLIER);
         mColors.add(SAMOLED_COLOR);
         mColors.add(FB0_RGB);
         mColors.add(FB_KCAL);
@@ -247,15 +255,6 @@ public class Calibration {
         }
 
         switch (COLOR) {
-            case COLOR_CONTROL_MUILTIPLIER: {
-                String[] colors = values.split(" ");
-                String red = String.valueOf(Utils.strToLong(colors[0]) * 10000000L);
-                String green = String.valueOf(Utils.strToLong(colors[1]) * 10000000L);
-                String blue = String.valueOf(Utils.strToLong(colors[2]) * 10000000L);
-                run(Control.write(red + " " + green + " " + blue, COLOR_CONTROL_MUILTIPLIER),
-                        COLOR_CONTROL_MUILTIPLIER, context);
-                break;
-            }
             case SAMOLED_COLOR: {
                 String[] colors = values.split(" ");
                 run(Control.write(String.valueOf(Utils.strToLong(colors[0]) * 10000000),
@@ -267,7 +266,12 @@ public class Calibration {
                 break;
             }
             default:
-                run(Control.write(values, COLOR), COLOR, context);
+                String[] colors = values.split(" ");
+                String red = String.valueOf(Utils.strToLong(colors[0]));
+                String green = String.valueOf(Utils.strToLong(colors[1]));
+                String blue = String.valueOf(Utils.strToLong(colors[2]));
+                run(Control.write(red + " " + green + " " + blue, COLOR),
+                        COLOR, context);
                 break;
         }
 
@@ -279,7 +283,6 @@ public class Calibration {
     public List<String> getLimits() {
         List<String> list = new ArrayList<>();
         switch (COLOR) {
-            case COLOR_CONTROL_MUILTIPLIER:
             case SAMOLED_COLOR:
                 for (int i = 60; i <= 400; i++) {
                     list.add(String.valueOf(i));
@@ -317,12 +320,6 @@ public class Calibration {
     public List<String> getColors() {
         List<String> list = new ArrayList<>();
         switch (COLOR) {
-            case COLOR_CONTROL_MUILTIPLIER:
-                String[] colors = Utils.readFile(COLOR_CONTROL_MUILTIPLIER).split(" ");
-                for (String color : colors) {
-                    list.add(String.valueOf(Utils.strToLong(color) / 10000000L));
-                }
-                break;
             case SAMOLED_COLOR:
                 if (Utils.existFile(SAMOLED_COLOR_RED)) {
                     long color = Utils.strToLong(Utils.readFile(SAMOLED_COLOR_RED)) / 10000000L;
@@ -338,11 +335,9 @@ public class Calibration {
                 }
                 break;
             default:
-                String value = Utils.readFile(COLOR);
-                if (value != null) {
-                    for (String color : value.split(" ")) {
-                        list.add(String.valueOf(Utils.strToLong(color)));
-                    }
+                String[] colors = Utils.readFile(COLOR).split(" ");
+                for (String color : colors) {
+                    list.add(String.valueOf(Utils.strToLong(color)));
                 }
                 break;
         }
