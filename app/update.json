@@ -1,10 +1,10 @@
 {
-  "latestVersion": "1.7.0.5",
-  "latestVersionCode": "1705",
-  "url": "https://github.com/xxmustafacooTR/ThunderTweaks/releases/download/1.0.7.4/ThunderTweaks_9810_v1.0.7.4.apk",
+  "latestVersion": "1.7.0.6",
+  "latestVersionCode": "1706",
+  "url": "https://github.com/xxmustafacooTR/ThunderTweaks/releases/download/1.0.7.6/ThunderTweaks_9810_v1.0.7.6.apk",
   "releaseNotes": [
     "Changelog:",
-    "+ Added Cpu DVFS Disabler Option",
-	"+ Added Cpu Affinity Settings"
+    "+ Add Screen Color Control and Move Mdnie Disable",
+	"+ Fixed IO Current Value"
   ]
 }
