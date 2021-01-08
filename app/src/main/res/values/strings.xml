@@ -10,7 +10,7 @@
     <string name="open">Open %s</string>
     <string name="disable">Disable</string>
     <string name="changelog">ThunderTweaks v%s</string>
-    <string name="changelog_message">\n+ Added Screen Color Control\n+ Moved Mdnie Disabler</string>
+    <string name="changelog_message">\n Add Throttling Step 5 \nAdd DVFS turn on/off toggle \n Set default delay time at 20sec \n Add GPU Time In States to OverallFragment</string>
     <string name="close">Close</string>
 
     <!-- Security -->
