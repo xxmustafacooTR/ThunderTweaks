@@ -611,6 +611,8 @@
     <string name="gpu_throttling3_summary">Exynos TMU control decrease GPU freq from max DVFS step to this freq if GPU temp is 100°C</string>
     <string name="gpu_throttling4">GPU LEVEL 4 Throttling Freq</string>
     <string name="gpu_throttling4_summary">Exynos TMU control decrease GPU freq from max DVFS step to this freq if GPU temp is 105°C</string>
+    <string name="gpu_throttling5">GPU LEVEL 5 Throttling Freq</string>
+    <string name="gpu_throttling5_summary">Exynos TMU control decrease GPU freq from max DVFS step to this freq if GPU temp is 105°C</string>
     <string name="gpu_tripping">GPU Tripping Freq</string>
     <string name="gpu_tripping_summary">Exynos TMU control trip GPU freq to this freq if GPU temp is 110°C</string>
     <string name="gpu_power_policy_card">GPU Power Policy Control</string>
@@ -625,6 +627,8 @@
     <string name="gpu_driver_version">Kernel Driver</string>
     <string name="gpu_lib_version">System Libs</string>
     <string name="gpu_driver_title">GPU Driver Info</string>
+    <string name="gpu_dvfs">GPU DVFS</string>
+    <string name="gpu_dvfs_summary">GPU DVFS support ON or OFF. This makes lower usage GPU for working UI and can give little less battery drain.</string>
 
     <!-- Screen -->
     <string name="screen_color">Screen Color</string>

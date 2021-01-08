@@ -41,40 +41,12 @@ public class GPUFreqTmu {
         }
         return sIOInstance;
     }
-
-    private static final String TMU_7885 = "/sys/devices/platform/11500000.mali/tmu";
-    private static final String THROTTLING1_7885 = "/sys/devices/platform/11500000.mali/throttling1";
-    private static final String THROTTLING2_7885 = "/sys/devices/platform/11500000.mali/throttling2";
-    private static final String THROTTLING3_7885 = "/sys/devices/platform/11500000.mali/throttling3";
-    private static final String THROTTLING4_7885 = "/sys/devices/platform/11500000.mali/throttling4";
-    private static final String TRIPPING_7885 = "/sys/devices/platform/11500000.mali/tripping";
-
-    private static final String TMU_78x0 = "/sys/devices/11400000.mali/tmu";
-    private static final String THROTTLING1_78x0 = "/sys/devices/11400000.mali/throttling1";
-    private static final String THROTTLING2_78x0 = "/sys/devices/11400000.mali/throttling2";
-    private static final String THROTTLING3_78x0 = "/sys/devices/11400000.mali/throttling3";
-    private static final String THROTTLING4_78x0 = "/sys/devices/11400000.mali/throttling4";
-    private static final String TRIPPING_78x0 = "/sys/devices/11400000.mali/tripping";
-
-    private static final String TMU_S7 = "/sys/devices/14ac0000.mali/tmu";
-    private static final String THROTTLING1_S7 = "/sys/devices/14ac0000.mali/throttling1";
-    private static final String THROTTLING2_S7 = "/sys/devices/14ac0000.mali/throttling2";
-    private static final String THROTTLING3_S7 = "/sys/devices/14ac0000.mali/throttling3";
-    private static final String THROTTLING4_S7 = "/sys/devices/14ac0000.mali/throttling4";
-    private static final String TRIPPING_S7 = "/sys/devices/14ac0000.mali/tripping";
-
-    private static final String TMU_S8 = "/sys/devices/platform/13900000.mali/tmu";
-    private static final String THROTTLING1_S8 = "/sys/devices/platform/13900000.mali/throttling1";
-    private static final String THROTTLING2_S8 = "/sys/devices/platform/13900000.mali/throttling2";
-    private static final String THROTTLING3_S8 = "/sys/devices/platform/13900000.mali/throttling3";
-    private static final String THROTTLING4_S8 = "/sys/devices/platform/13900000.mali/throttling4";
-    private static final String TRIPPING_S8 = "/sys/devices/platform/13900000.mali/tripping";
-
     private static final String TMU_S9 = "/sys/devices/platform/17500000.mali/tmu";
     private static final String THROTTLING1_S9 = "/sys/devices/platform/17500000.mali/throttling1";
     private static final String THROTTLING2_S9 = "/sys/devices/platform/17500000.mali/throttling2";
     private static final String THROTTLING3_S9 = "/sys/devices/platform/17500000.mali/throttling3";
     private static final String THROTTLING4_S9 = "/sys/devices/platform/17500000.mali/throttling4";
+    private static final String THROTTLING5_S9 = "/sys/devices/platform/17500000.mali/throttling5";
     private static final String TRIPPING_S9 = "/sys/devices/platform/17500000.mali/tripping";
 
     private final List<String> mTmu = new ArrayList<>();
@@ -82,44 +54,23 @@ public class GPUFreqTmu {
     private final List<String> mThrottling2 = new ArrayList<>();
     private final List<String> mThrottling3 = new ArrayList<>();
     private final List<String> mThrottling4 = new ArrayList<>();
+    private final List<String> mThrottling5 = new ArrayList<>();
     private final List<String> mTripping = new ArrayList<>();
 
 
     {
-        mTmu.add(TMU_7885);
-        mTmu.add(TMU_78x0);
-        mTmu.add(TMU_S7);
-        mTmu.add(TMU_S8);
         mTmu.add(TMU_S9);
 
-        mThrottling1.add(THROTTLING1_7885);
-        mThrottling1.add(THROTTLING1_78x0);
-        mThrottling1.add(THROTTLING1_S7);
-        mThrottling1.add(THROTTLING1_S8);
         mThrottling1.add(THROTTLING1_S9);
 
-        mThrottling2.add(THROTTLING2_7885);
-        mThrottling2.add(THROTTLING2_78x0);
-        mThrottling2.add(THROTTLING2_S7);
-        mThrottling2.add(THROTTLING2_S8);
         mThrottling2.add(THROTTLING2_S9);
 
-        mThrottling3.add(THROTTLING3_7885);
-        mThrottling3.add(THROTTLING3_78x0);
-        mThrottling3.add(THROTTLING3_S7);
-        mThrottling3.add(THROTTLING3_S8);
         mThrottling3.add(THROTTLING3_S9);
 
-        mThrottling4.add(THROTTLING4_7885);
-        mThrottling4.add(THROTTLING4_78x0);
-        mThrottling4.add(THROTTLING4_S7);
-        mThrottling4.add(THROTTLING4_S8);
         mThrottling4.add(THROTTLING4_S9);
 
-        mTripping.add(TRIPPING_7885);
-        mTripping.add(TRIPPING_78x0);
-        mTripping.add(TRIPPING_S7);
-        mTripping.add(TRIPPING_S8);
+        mThrottling5.add(THROTTLING5_S9);
+
         mTripping.add(TRIPPING_S9);
     }
 
@@ -128,6 +79,7 @@ public class GPUFreqTmu {
     private String THROTTLING2;
     private String THROTTLING3;
     private String THROTTLING4;
+    private String THROTTLING5;
     private String TRIPPING;
 
     private GPUFreqTmu() {
@@ -162,6 +114,13 @@ public class GPUFreqTmu {
         for (String file : mThrottling4) {
             if (Utils.existFile(file)) {
                 THROTTLING4 = file;
+                break;
+            }
+        }
+
+        for (String file : mThrottling5) {
+            if (Utils.existFile(file)) {
+                THROTTLING5 = file;
                 break;
             }
         }
@@ -238,6 +197,18 @@ public class GPUFreqTmu {
         run(Control.write(value, TRIPPING), TRIPPING, context);
     }
 
+    public void setThrottling5(String value, Context context) {
+        run(Control.write(value, THROTTLING5), THROTTLING5, context);
+    }
+
+    public int getThrottling5() {
+        return Utils.strToInt(Utils.readFile(THROTTLING5));
+    }
+
+    public boolean hasThrottling5() {
+        return THROTTLING5 != null;
+    }
+
     public int getTripping() {
         return Utils.strToInt(Utils.readFile(TRIPPING));
     }
@@ -248,7 +219,7 @@ public class GPUFreqTmu {
 
     public boolean supported() {
         return hasThrottling1() || hasThrottling2() || hasThrottling3() || hasThrottling4()
-                || hasTripping();
+                || hasThrottling5() || hasTripping();
     }
 
     private void run(String command, String id, Context context) {
