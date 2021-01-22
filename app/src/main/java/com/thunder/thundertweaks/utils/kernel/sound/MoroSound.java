@@ -19,9 +19,15 @@ public class MoroSound {
     private static final String HEADPHONE_GAIN = MORO_SOUND + "headphone_gain";
     private static final String EARPIECE_GAIN = MORO_SOUND + "earpiece_gain";
     private static final String SPEAKER_GAIN = MORO_SOUND + "speaker_gain";
+    private static final String MIC_DOWN_GAIN = MORO_SOUND + "mic_down_gain";
+    private static final String MIC_UP_GAIN = MORO_SOUND + "mic_up_gain";
+    private static final String MIC_HP_GAIN = MORO_SOUND + "mic_hp_gain";
 
     private static final String MAIN_SW = MORO_SOUND + "moro_sound";
     private static final String EQ_SW = MORO_SOUND + "eq";
+    private static final String DUAL_SPEAKER_SW = MORO_SOUND + "dual_speaker";
+    private static final String HEADPHONE_MONO_SW = MORO_SOUND + "headphone_mono";
+    private static final String MIC_SW = MORO_SOUND + "mic";
 
     private static final String EQ_1_GAIN = MORO_SOUND + "eq_b1_gain";
     private static final String EQ_2_GAIN = MORO_SOUND + "eq_b2_gain";
@@ -30,10 +36,8 @@ public class MoroSound {
     private static final String EQ_5_GAIN = MORO_SOUND + "eq_b5_gain";
     private static final String EQ_GAINS = MORO_SOUND + "eq_gains";
 
-    private static final String HEADPHONE_LIMITS = MORO_SOUND + "headphone_limits";
-
-
-
+    //private static final String HEADPHONE_LIMITS = MORO_SOUND + "headphone_limits";
+    private static final String RESET_BTN = MORO_SOUND + "reset";
     private static final String VERSION = MORO_SOUND + "version";
 
     private static final List<String> sEqGains = new ArrayList<>();
@@ -47,7 +51,6 @@ public class MoroSound {
         sEqGains.add(EQ_5_GAIN);
 
         sEqProfiles.put("Flat", "0,0,0,0,0");
-        sEqProfiles.put("Normal", "1,0,0,0,1");
         sEqProfiles.put("Extreme Bass", "12,8,3,-1,1");
         sEqProfiles.put("Bass-Treble Balance", "10,7,0,2,5");
         sEqProfiles.put("Treble Gain", "-5,1,0,4,3");
@@ -59,6 +62,16 @@ public class MoroSound {
         sEqProfiles.put("DeepBass", "10,-1,8,4,8");
         sEqProfiles.put("Detonation", "9,4,-2,7,11");
         sEqProfiles.put("BeastCream", "9,4,10,4,7");
+    }
+
+
+    // RESET
+    public static boolean hasReset(){
+        return Utils.existFile(RESET_BTN);
+    }
+
+    public static void setResetBtn(String value, Context context){
+        run(Control.write(value + " " + value, RESET_BTN), RESET_BTN, context);
     }
 
 
@@ -81,15 +94,16 @@ public class MoroSound {
         run(Control.write(value + " " + value, HEADPHONE_GAIN), HEADPHONE_GAIN, context);
     }
 
+
     // Grx
     public static void setHeadPhoneValues(String value_left, String value_right, Context context){
         run(Control.write(value_left + " " + value_right, HEADPHONE_GAIN), HEADPHONE_GAIN, context);
     }
-
-    public static String getHeadphoneLimits(){
-        return Utils.readFile(HEADPHONE_LIMITS);
-    }
-
+    /*
+        public static String getHeadphoneLimits(){
+            return Utils.readFile(HEADPHONE_LIMITS);
+        }
+    */
     public static String getHeadphoneL(){
         String[] value = Utils.readFile(HEADPHONE_GAIN).split(" ");
         return value[0];
@@ -104,7 +118,7 @@ public class MoroSound {
         String[] value = Utils.readFile(HEADPHONE_GAIN).split(" ");
         return value[1];
     }
-    
+
     public static void setHeadphoneR(String value, Context context){
         String left = getHeadphoneL();
         run(Control.write(left + " " + value, HEADPHONE_GAIN), HEADPHONE_GAIN, context);
@@ -136,6 +150,84 @@ public class MoroSound {
 
     public static void setEarpiece(String value, Context context){
         run(Control.write(value, EARPIECE_GAIN), EARPIECE_GAIN, context);
+    }
+
+
+    // DUAL SPEAKER
+    public static boolean hasDualSpeakerSw(){
+        return Utils.existFile(DUAL_SPEAKER_SW);
+    }
+
+    public static Boolean isDualSpeakerSwEnabled(){
+        return Utils.readFile(DUAL_SPEAKER_SW).equals("1");
+    }
+
+    public static void enableDualSpeakerSw(Boolean enable, Context context){
+        run(Control.write(enable ? "1" : "0", DUAL_SPEAKER_SW), DUAL_SPEAKER_SW, context);
+    }
+
+
+    // HEADPHONE MONO
+    public static boolean hasHeadphoneMonoSw(){
+        return Utils.existFile(HEADPHONE_MONO_SW);
+    }
+
+    public static Boolean isHeadphoneMonoSwEnabled(){
+        return Utils.readFile(HEADPHONE_MONO_SW).equals("1");
+    }
+
+    public static void enableHeadphoneMonoSw(Boolean enable, Context context){
+        run(Control.write(enable ? "1" : "0", HEADPHONE_MONO_SW), HEADPHONE_MONO_SW, context);
+    }
+
+
+    // MIC
+    public static boolean hasMicSw(){
+        return Utils.existFile(MIC_SW);
+    }
+
+    public static Boolean isMicSwEnabled(){
+        return Utils.readFile(MIC_SW).equals("1");
+    }
+
+    public static void enableMicSw(Boolean enable, Context context){
+        run(Control.write(enable ? "1" : "0", MIC_SW), MIC_SW, context);
+    }
+
+    public static boolean hasMicUpGain(){
+        return Utils.existFile(MIC_UP_GAIN);
+    }
+
+    public static String getMicUpGain(){
+        return Utils.readFile(MIC_UP_GAIN);
+    }
+
+    public static void setMicUpGain(String value, Context context){
+        run(Control.write(value, MIC_UP_GAIN), MIC_UP_GAIN, context);
+    }
+
+    public static boolean hasMicDownGain(){
+        return Utils.existFile(MIC_DOWN_GAIN);
+    }
+
+    public static String getMicDownGain(){
+        return Utils.readFile(MIC_DOWN_GAIN);
+    }
+
+    public static void setMicDownGain(String value, Context context){
+        run(Control.write(value, MIC_DOWN_GAIN), MIC_DOWN_GAIN, context);
+    }
+
+    public static boolean hasMicHpGain(){
+        return Utils.existFile(MIC_HP_GAIN);
+    }
+
+    public static String getMicHpGain(){
+        return Utils.readFile(MIC_HP_GAIN);
+    }
+
+    public static void setMicHpGain(String value, Context context){
+        run(Control.write(value, MIC_HP_GAIN), MIC_HP_GAIN, context);
     }
 
 
